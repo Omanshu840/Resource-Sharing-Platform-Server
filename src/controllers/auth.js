@@ -41,7 +41,7 @@ Router.post('/signup', async (request, response) => {
         jwt.sign(
             payload,
             JWT_SECRET, {
-                expiresIn: 10000
+                expiresIn: 100000
             },
             (err, token) => {
                 if (err) throw err;
@@ -85,12 +85,13 @@ Router.post('/login', async (request, response) => {
             payload,
             JWT_SECRET,
             {
-                expiresIn: 3600
+                expiresIn: 100000
             },
             (err, token) => {
                 if(err) throw err;
 
                 response.status(200).json({
+                    user,
                     token
                 });
             }
@@ -107,9 +108,13 @@ Router.post('/login', async (request, response) => {
 Router.get('/user', auth, async (request, response) => {
     try {
         const user = await User.findById(request.user._id);
-        response.json(user);
+        response.status(200).json({
+            user
+        });
     } catch(e) {
-        response.send({message: "Error in Fetching user"})
+        response.status(500).json({
+            error: "Error in Fetching user"
+        })
     }
 })
 

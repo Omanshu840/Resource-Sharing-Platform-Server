@@ -90,7 +90,7 @@ resourcesRouter.get('/resources/:course_id', (request, response) => {
 })
 
 
-resourcesRouter.post("/resources/:course_id", upload.single("file"), function(req, res) {
+resourcesRouter.post("/resources/:course_id", auth, upload.single("file"), function(req, res) {
     console.log(req)
     const file = req.file;
     const s3FileURL = AWS_FILE_URL;
@@ -129,13 +129,13 @@ resourcesRouter.post("/resources/:course_id", upload.single("file"), function(re
 });
 
 
-resourcesRouter.post('/resources/:course_id', auth, async (req,res)=>{
+resourcesRouter.post('/resources', auth, async (req,res)=>{
 
     let newResource = new Resource({
         title: req.body.title,
         link: req.body.link,
         description: req.body.description,
-        course: mongoose.Types.ObjectId(req.params.course_id),
+        course: mongoose.Types.ObjectId(req.body.courseId),
     });
     
     newResource.save().then(r=>{

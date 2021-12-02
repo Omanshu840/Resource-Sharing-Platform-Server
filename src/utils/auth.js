@@ -6,12 +6,12 @@ module.exports = function(req, res, next) {
     const {authorization} = req.headers
 
     if(!authorization) {
-        return res.status(401).json({error: "you must be logged in"})
+        return res.status(401).json({error: "You must be logged in"})
     }
 
     const token = authorization.replace("Bearer ", "")
 
-    if (!token) return res.status(401).json({ error: "you must be logged in" });
+    if (!token) return res.status(401).json({ error: "You must be logged in" });
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
 
